@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="/spinner.css">
+</head>
+<body>
+    <div class="sk-cube-grid" id="spinner">
+        <div class="sk-cube sk-cube1"></div>
+        <div class="sk-cube sk-cube2"></div>
+        <div class="sk-cube sk-cube3"></div>
+        <div class="sk-cube sk-cube4"></div>
+        <div class="sk-cube sk-cube5"></div>
+        <div class="sk-cube sk-cube6"></div>
+        <div class="sk-cube sk-cube7"></div>
+        <div class="sk-cube sk-cube8"></div>
+        <div class="sk-cube sk-cube9"></div>
+    </div>
+    <canvas id="chart"></canvas>
+    <script src="/lib/moment/min/moment-with-locales.min.js"></script>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/Chart.js/dist/Chart.js"></script>
+    <script>
+        var jsonData = $.ajax({
+            url: '/api/unread',
+            dataType: 'json',
+        }).done(function (d) {
+
+            // Split timestamp and data into separate arrays
+            var spinner = document.getElementById('spinner');
+            spinner.style.display = 'none';
+            var ctx = document.getElementById('chart').getContext('2d');
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'bar',
+
+                // The data for our dataset
+                data: d,
+
+                // Configuration options go here
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Mails'
+                    },
+                    scales: {
+                        xAxes: [{
+                            stacked: true,
+                            type: "time",
+                        }],
+                        yAxes: [{
+                            stacked: true
+                        }]
+                    }
+                }
+            }
+            );
+        })</script>
+</body>
+</html>
